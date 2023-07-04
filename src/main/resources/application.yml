@@ -1,0 +1,39 @@
+# Tomcat
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+logging:
+  level:
+    root: info
+    com.alibaba: debug
+
+# Spring
+spring:
+  application:
+    # ????
+    name: demo1
+  profiles:
+    # ????
+    active: ${RUN_ENV:dev}
+
+--- # nacos ??
+spring:
+  cloud:
+    nacos:
+      # nacos ????
+      server-addr: ${NACOS_HOST}:${NACOS_PORT}
+      discovery:
+        # ???
+        group: DEFAULT_GROUP
+        namespace: ${spring.profiles.active}
+      config:
+        # ???
+        group: DEFAULT_GROUP
+        namespace: ${spring.profiles.active}
+        # ??????
+        file-extension: yml
+  config:
+    import:
+      - optional:nacos:${spring.application.name}.yml
